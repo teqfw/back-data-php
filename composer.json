@@ -1,0 +1,32 @@
+{
+  "name": "teqfw/back-data-php",
+  "description": "Data objects in Tequila Framework (PHP)",
+  "homepage": "https://github.com/teqfw/back-data-php",
+  "license": "BSD-2-Clause",
+  "authors": [
+    {
+      "name": "Alex Gusev",
+      "email": "alex@flancer64.com"
+    }
+  ],
+  "require": {
+  },
+  "require-dev": {
+    "teqfw/back-test-php": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "TeqFw\\Lib\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+    }
+  },
+  "repositories": {
+    "teqfw/back-test-php": {
+      "type": "vcs",
+      "url": "https://github.com/teqfw/back-test-php"
+    }
+  }
+}
