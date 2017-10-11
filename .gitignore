@@ -1,4 +1,6 @@
 /.idea/
 /atlassian-ide-plugin.xml
 /composer.lock
+/test/coverage/
+/ttttest.*
 /vendor

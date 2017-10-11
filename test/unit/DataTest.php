@@ -3,7 +3,7 @@
  * User: Alex Gusev <alex@flancer64.com>
  */
 
-namespace TeqFw\Lib\Dem\Test;
+namespace TeqFw\Lib\Test;
 
 
 class DataTest
@@ -14,5 +14,43 @@ class DataTest
         $obj = new \TeqFw\Lib\Data();
         $this->assertInstanceOf(\stdClass::class, $obj);
     }
+
+    public function testGet_propertyMissed()
+    {
+        $obj = new \TeqFw\Lib\Data();
+        $value = $obj->prop;
+        $this->assertNull($value);
+    }
+
+    public function testGet_propertyExists()
+    {
+        $obj = new \TeqFw\Lib\Data();
+        $obj->prop = 'value';
+        $value = $obj->prop;
+        $this->assertEquals('value', $value);
+    }
+
+
+    public function testSet_propertyExists()
+    {
+        $obj = new \TeqFw\Lib\Data();
+        $obj->prop = 'value';
+        $value = $obj->prop;
+        $this->assertEquals('value', $value);
+        $obj->prop = 'value2';
+        $value = $obj->prop;
+        $this->assertEquals('value2', $value);
+    }
+
+    public function testGet_byPath()
+    {
+        $obj = new \TeqFw\Lib\Data();
+        $obj->path = new \TeqFw\Lib\Data();
+        $obj->path->to = new \TeqFw\Lib\Data();
+        $obj->path->to->node = 'value';
+        $value = $obj->get('/path/to/node');
+        $this->assertEquals('value', $value);
+    }
+
 
 }
