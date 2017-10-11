@@ -15,6 +15,7 @@ class Data
     use \TeqFw\Lib\Data\TMain {
         explodePath as private;
         getByPath as private;
+        setByPath as private;
     }
 
     /** Separator for path elements */
@@ -23,17 +24,25 @@ class Data
     public function __construct()
     {
         $argc = func_num_args();
-        if ($argc == 0) {
-            // empty DataObject is just an \stdClass
-        } elseif ($argc == 1) {
-            // parse and store first argument if it is not 'null'.
+        if ($argc > 0) {
+            // parse and store first argument if it is object or array.
             $first = func_get_arg(0);
-            /* TODO: parse constructor argument */
-            if (!is_null($first)) {
-                $this->data = $first;
+            if (
+                is_object($first)
+                || is_array($first)
+            ) {
+                foreach ($first as $key => $value) {
+                    if (
+                        is_object($value)
+                        || is_array($value)
+                    ) {
+                        $data = new \TeqFw\Lib\Data($value);
+                        $this->{$key} = $data;
+                    } else {
+                        $this->{$key} = $value;
+                    }
+                }
             }
-        } else {
-            throw new \Exception('Wrong number of constructor arguments (should be <2).');
         }
     }
 
@@ -65,15 +74,16 @@ class Data
         return $result;
     }
 
-
     /**
-     * Magic method to write properties directly.
+     * Set (nested) property by path.
      *
-     * @param $name
-     * @param $value
+     * @param string $path "path/to/node"
+     * @param mixed $value value to set
+     * @param bool $replace 'false' - don't replace existing nodes
      */
-//    public function __set($name, $value)
-//    {
-//        $this->$name = $value;
-//    }
+    public function set($path, $value, $replace = true)
+    {
+        $parts = $this->explodePath($path);
+        $this->setByPath($this, $parts, $value, $replace);
+    }
 }

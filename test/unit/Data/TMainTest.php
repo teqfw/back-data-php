@@ -31,17 +31,6 @@ class TMainTest
         $this->assertEquals('node', $res[2]);
     }
 
-    public function testGetByPath_normal()
-    {
-        $obj = new \TeqFw\Lib\Test\Data\Blank();
-        $data = new \TeqFw\Lib\Data();
-        $data->path = new \TeqFw\Lib\Data();
-        $data->path->to = new \TeqFw\Lib\Data();
-        $data->path->to->node = 'value';
-        $value = $obj->getByPath($data, ['path', 'to', 'node']);
-        $this->assertEquals('value', $value);
-    }
-
     public function testGetByPath_longPath()
     {
         $obj = new \TeqFw\Lib\Test\Data\Blank();
@@ -53,6 +42,17 @@ class TMainTest
         $this->assertNull($value);
     }
 
+    public function testGetByPath_normal()
+    {
+        $obj = new \TeqFw\Lib\Test\Data\Blank();
+        $data = new \TeqFw\Lib\Data();
+        $data->path = new \TeqFw\Lib\Data();
+        $data->path->to = new \TeqFw\Lib\Data();
+        $data->path->to->node = 'value';
+        $value = $obj->getByPath($data, ['path', 'to', 'node']);
+        $this->assertEquals('value', $value);
+    }
+
     public function testGetByPath_shortPath()
     {
         $obj = new \TeqFw\Lib\Test\Data\Blank();
@@ -60,6 +60,37 @@ class TMainTest
         $data->path = new \TeqFw\Lib\Data();
         $data->path->to = new \TeqFw\Lib\Data();
         $data->path->to->node = 'value';
+        $value = $obj->getByPath($data, ['path', 'to']);
+        $this->assertInstanceOf(\TeqFw\Lib\Data::class, $value);
+    }
+
+    public function testSetByPath_nestedDataObject_replaceFalse()
+    {
+        $obj = new \TeqFw\Lib\Test\Data\Blank();
+        $data = new \TeqFw\Lib\Data();
+        $data->path = new \TeqFw\Lib\Data();
+        $obj->setByPath($data, ['path', 'to', 'node'], 'value', false);
+        $value = $obj->getByPath($data, ['path']);
+        $this->assertInstanceOf(\TeqFw\Lib\Data::class, $value);
+        $value = $obj->getByPath($data, ['path', 'to']);
+        $this->assertNull($value);
+    }
+
+    public function testSetByPath_nestedDataObject_replaceTrue()
+    {
+        $obj = new \TeqFw\Lib\Test\Data\Blank();
+        $data = new \TeqFw\Lib\Data();
+        $data->path = new \TeqFw\Lib\Data();
+        $obj->setByPath($data, ['path', 'to', 'node'], 'value', true);
+        $value = $obj->getByPath($data, ['path', 'to']);
+        $this->assertInstanceOf(\TeqFw\Lib\Data::class, $value);
+    }
+
+    public function testSetByPath_normal()
+    {
+        $obj = new \TeqFw\Lib\Test\Data\Blank();
+        $data = new \TeqFw\Lib\Data();
+        $obj->setByPath($data, ['path', 'to', 'node'], 'value', true);
         $value = $obj->getByPath($data, ['path', 'to']);
         $this->assertInstanceOf(\TeqFw\Lib\Data::class, $value);
     }

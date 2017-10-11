@@ -64,4 +64,30 @@ trait TMain
         }
         return $result;
     }
+
+    public function setByPath($obj, $parts, $value, $replace)
+    {
+        $depth = count($parts); // number of steps in the path
+        $current = $obj;
+        $level = 1;
+        foreach ($parts as $part) {
+            if ($level >= $depth) {
+                /* set value here */
+                $current->{$part} = $value;
+            } else {
+                $prop = $current->{$part};
+                if ($prop instanceof \TeqFw\Lib\Data) {
+                    if ($replace) {
+                        $current = $prop;
+                    } else {
+                        break;
+                    }
+                } else {
+                    $current->{$part} = new \TeqFw\Lib\Data();
+                    $current = $current->{$part};
+                }
+            }
+            $level++;
+        }
+    }
 }
