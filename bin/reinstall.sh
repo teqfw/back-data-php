@@ -32,6 +32,8 @@ echo "************************************************************************"
 rm -fr ${DIR_ROOT}/test/coverage
 php ${DIR_ROOT}/vendor/bin/phpunit -c ${DIR_ROOT}/test/unit/phpunit.dist.xml
 
+
+
 echo ""
 echo "************************************************************************"
 echo "  The job is done."
