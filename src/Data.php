@@ -28,15 +28,23 @@ class Data
             // parse and store first argument if it is object or array.
             $first = func_get_arg(0);
             if (
-                is_object($first)
-                || is_array($first)
+                is_object($first) &&
+                (
+                    (get_class($first) == \stdClass::class) ||
+                    (get_class($first) == self::class)
+                ) ||
+                is_array($first)
             ) {
                 foreach ($first as $key => $value) {
                     if (
-                        is_object($value)
-                        || is_array($value)
+                        is_object($value) &&
+                        (
+                            (get_class($value) == \stdClass::class) ||
+                            (get_class($value) == self::class)
+                        ) ||
+                        is_array($value)
                     ) {
-                        $data = new \TeqFw\Lib\Data($value);
+                        $data = new self($value);
                         $this->{$key} = $data;
                     } else {
                         $this->{$key} = $value;
