@@ -31,7 +31,7 @@ class Data
                 is_object($first) &&
                 (
                     (get_class($first) == \stdClass::class) ||
-                    (get_class($first) == self::class)
+                    ($first instanceof self)
                 ) ||
                 is_array($first)
             ) {
@@ -40,7 +40,7 @@ class Data
                         is_object($value) &&
                         (
                             (get_class($value) == \stdClass::class) ||
-                            (get_class($value) == self::class)
+                            ($value instanceof self)
                         ) ||
                         is_array($value)
                     ) {
